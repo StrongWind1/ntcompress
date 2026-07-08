@@ -22,7 +22,6 @@ Plaintext for all vectors: 4096 bytes of repeating A-Z pattern.
 from __future__ import annotations
 
 import sys
-import zlib as _zlib
 
 import pytest
 
@@ -31,11 +30,10 @@ from ntcompress.ntdll import deflate
 from ntcompress.ntdll import lznt1, xpress, xpress_huff
 from ntcompress.ntdll import zlib as ntdll_zlib
 
-# DEFLATE/ZLIB byte-identical compression tests depend on the exact output of
-# the stdlib zlib. Python 3.14+ ships zlib 1.4 which produces valid but
-# different compressed bytes at the same level. Decompression is unaffected.
-_ZLIB_COMPAT = sys.version_info < (3, 14) or _zlib.ZLIB_RUNTIME_VERSION.startswith("1.3")
-_skip_zlib_compress = pytest.mark.skipif(not _ZLIB_COMPAT, reason=f"zlib {_zlib.ZLIB_RUNTIME_VERSION} produces different (valid) compressed output")
+# DEFLATE/ZLIB byte-identical compression tests pin expected output to the
+# stdlib zlib shipped with Python 3.11-3.13. Python 3.14 changed the default
+# compression output (valid but different bytes). Decompression is unaffected.
+_skip_zlib_compress = pytest.mark.skipif(sys.version_info >= (3, 14), reason="Python 3.14+ zlib produces different (valid) compressed output")
 
 PLAIN = bytes(0x41 + (i % 26) for i in range(1, 4097))
 

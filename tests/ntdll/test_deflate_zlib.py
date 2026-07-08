@@ -4,14 +4,11 @@ from __future__ import annotations
 
 import os
 import sys
-import zlib as _zlib
 
 import pytest
 
 from ntcompress.ntdll import deflate
 from ntcompress.ntdll import zlib as ntdll_zlib
-
-_ZLIB_COMPAT = sys.version_info < (3, 14) or _zlib.ZLIB_RUNTIME_VERSION.startswith("1.3")
 
 PLAIN = bytes(0x41 + (i % 26) for i in range(1, 4097))
 
@@ -115,7 +112,7 @@ def test_zlib_header_bytes() -> None:
 # --- Cross-format consistency ---
 
 
-@pytest.mark.skipif(not _ZLIB_COMPAT, reason=f"zlib {_zlib.ZLIB_RUNTIME_VERSION} uses different wbits initialization")
+@pytest.mark.skipif(sys.version_info >= (3, 14), reason="Python 3.14+ zlib changed wbits initialization")
 def test_zlib_wraps_deflate() -> None:
     """ZLIB stream = 2-byte header + raw DEFLATE + 4-byte Adler-32."""
     data = b"consistency check " * 50
