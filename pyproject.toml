@@ -3,7 +3,7 @@ name = "ntcompress"
 version = "0.1.0"
 description = "Pure-Python implementations of every Microsoft ESE record-compression scheme and Windows ntdll RtlCompressBuffer/RtlDecompressBuffer format."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "ntcompress contributors" }]
@@ -11,6 +11,7 @@ keywords = ["ese", "esent", "jet", "ntdll", "xpress", "xpress9", "xpress10", "lz
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -42,7 +43,7 @@ requires = ["uv_build>=0.11.12,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py310"
 line-length = 320
 src = ["src"]
 
@@ -65,7 +66,7 @@ ignore = [
 convention = "google"
 
 [tool.ty.environment]
-python-version = "3.11"
+python-version = "3.10"
 root = ["src"]
 
 [tool.ty.rules]
