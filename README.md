@@ -1,5 +1,13 @@
 # ntcompress
 
+<p align="center">
+  <a href="https://github.com/StrongWind1/ntcompress/actions/workflows/ci.yml"><img src="https://github.com/StrongWind1/ntcompress/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://pypi.org/project/ntcompress/"><img src="https://img.shields.io/pypi/v/ntcompress.svg" alt="PyPI"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+"></a>
+  <a href="https://github.com/StrongWind1/ntcompress/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0"></a>
+  <a href="https://strongwind1.github.io/ntcompress/"><img src="https://img.shields.io/badge/docs-mkdocs-blue.svg" alt="Docs"></a>
+</p>
+
 Pure-Python, standard-library-only implementations of every compression format used by Microsoft's Extensible Storage Engine (ESE/ESENT, the "JET Blue" engine behind `NTDS.dit`, Exchange stores, `Windows.edb`, `SRUDB.dat`, and `WebCacheV01.dat`) and Windows `ntdll.dll` compression (`RtlCompressBuffer` / `RtlDecompressBuffer`). No runtime dependencies beyond the standard library.
 
 ## Scope
