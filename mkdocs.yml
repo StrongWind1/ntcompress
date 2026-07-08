@@ -1,0 +1,65 @@
+site_name: ntcompress
+site_description: Pure-Python implementations of every Microsoft ESE record-compression format and Windows ntdll compression format.
+site_url: https://strongwind1.github.io/ntcompress/
+repo_url: https://github.com/StrongWind1/ntcompress
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - User guide:
+    - ESE compression: user-guide/ese.md
+    - ntdll compression: user-guide/ntdll.md
+    - Error handling: user-guide/errors.md
+  - Reference:
+    - API reference:
+      - reference/api/index.md
+      - ntcompress.ese: reference/api/ese.md
+      - ESE checksums: reference/api/ese-checksums.md
+      - ESE format modules: reference/api/ese-formats.md
+      - ntcompress.ntdll: reference/api/ntdll.md
+      - ntdll format modules: reference/api/ntdll-formats.md
+      - Exceptions: reference/api/exceptions.md
+    - Format details: reference/formats.md
+    - Spec traceability: reference/spec-traceability.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: true
+            members_order: source
+            docstring_style: google
+            merge_init_into_class: true
+            show_signature_annotations: true

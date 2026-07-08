@@ -1,0 +1,85 @@
+[project]
+name = "ntcompress"
+version = "0.0.0"
+description = "Pure-Python implementations of every Microsoft ESE record-compression scheme and Windows ntdll RtlCompressBuffer/RtlDecompressBuffer format."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "ntcompress contributors" }]
+keywords = ["ese", "esent", "jet", "ntdll", "xpress", "xpress9", "xpress10", "lznt1", "lz4", "ms-xca", "compression", "forensics"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Security",
+  "Topic :: System :: Archiving :: Compression",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/StrongWind1/ntcompress"
+Documentation = "https://strongwind1.github.io/ntcompress/"
+Changelog = "https://github.com/StrongWind1/ntcompress/blob/main/CHANGELOG.md"
+Issues = "https://github.com/StrongWind1/ntcompress/issues"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "hypothesis",
+    "ruff",
+    "ty",
+]
+docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
+
+[build-system]
+requires = ["uv_build>=0.11.12,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 320
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812",   # Trailing comma - conflicts with the ruff formatter
+    "ISC001",   # Implicit string concat - conflicts with the ruff formatter
+    "D203",     # No blank line before class docstring - conflicts with D211
+    "D213",     # Multi-line docstring summary on second line - conflicts with D212
+    "PLR0913",  # Too many arguments - wire-format and decoder functions legitimately need many params
+    "PLC0415",  # Import not at top level - deferred imports used pervasively for circular-import avoidance between ese/__init__.py and format modules
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ALL"]
+"src/**/xpress9.py" = ["C901", "PLR0912", "PLR0915", "PLR2004"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ty.environment]
+python-version = "3.11"
+root = ["src"]
+
+[tool.ty.rules]
+all = "error"
+
+[tool.ty.terminal]
+error-on-warning = true
+
+[[tool.ty.overrides]]
+include = ["tests/**"]
+
+[tool.ty.overrides.rules]
+all = "ignore"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
