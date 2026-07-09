@@ -57,8 +57,17 @@ ntdll format 0x0005 is an undocumented format (block magic `0xC039E510`) unrelat
 
 ## Installation
 
-```bash
-uv add ntcompress   # once published
+Install from [PyPI](https://pypi.org/project/ntcompress/):
+
+```sh
+uv add ntcompress        # recommended
+pip install ntcompress    # or with pip
+```
+
+Or install from source:
+
+```sh
+uv add git+https://github.com/StrongWind1/ntcompress
 ```
 
 Requires Python >= 3.11.
