@@ -407,8 +407,10 @@ class TestNtdllShapeA:
         assert ntdll.Format.LZNT1 == 0x0002
         assert ntdll.Format.XPRESS == 0x0003
         assert ntdll.Format.XPRESS_HUFF == 0x0004
-        assert ntdll.Format.DEFLATE == 0x0100
-        assert ntdll.Format.ZLIB == 0x0101
+        assert ntdll.Format.XPRESS9 == 0x0005
+        assert ntdll.Format.XP10 == 0x0006
+        assert ntdll.Format.DEFLATE == 0x0007
+        assert ntdll.Format.ZLIB == 0x0008
 
     def test_compression_format_aliases(self):
         import ntcompress.ntdll as ntdll
