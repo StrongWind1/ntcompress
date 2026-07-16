@@ -12,10 +12,18 @@
 
 ::: ntcompress.ntdll.xpress_huff
 
-## DEFLATE (0x0100)
+## Compact XPRESS9 (0x0005)
+
+::: ntcompress.ntdll.xpress9
+
+## XP10 / LZ4 block (0x0006)
+
+::: ntcompress.ntdll.xp10
+
+## DEFLATE (0x0007)
 
 ::: ntcompress.ntdll.deflate
 
-## ZLIB (0x0101)
+## ZLIB (0x0008)
 
 ::: ntcompress.ntdll.zlib

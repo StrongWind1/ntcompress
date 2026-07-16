@@ -11,8 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ntcompress.ese`: ESE record-compression with dual API -- dispatch by `Format` enum or import format modules directly.
 - ESE formats: 7-bit ASCII (`0x1`), 7-bit Unicode (`0x2`), XPRESS (`0x3`), SCRUB (`0x4`), XPRESS9 (`0x5`), XPRESS10 (`0x6`), LZ4 (`0x7`).
 - `ntcompress.ntdll`: ntdll `RtlCompressBuffer`/`RtlDecompressBuffer` formats with the same dual API.
-- ntdll formats: LZNT1 (`0x0002`), XPRESS (`0x0003`), XPRESS_HUFF (`0x0004`), DEFLATE (`0x0100`), ZLIB (`0x0101`).
+- ntdll formats: LZNT1 (`0x0002`), XPRESS (`0x0003`), XPRESS_HUFF (`0x0004`), Compact XPRESS9 (`0x0005`), XP10 (`0x0006`), DEFLATE (`0x0007`), ZLIB (`0x0008`).
 - `COMPRESSION_FORMAT_*` aliases on `ntcompress.ntdll` matching the `ntifs.h` constant names.
+- Compact XPRESS9 decompressor and compressor for format `0x0005`, reverse-engineered from `ntdll.dll` Build 20348. Same Huffman LZ77 core as ESE XPRESS9 with a 10-byte header (magic `0xC039E510`).
 - CRC-32C and CRC-64/NVME checksums at `ntcompress.ese.checksums`.
 - Compress output verified byte-identical to `esent.dll` and `ntdll.dll` across 16 Windows builds (XP SP3 through Server 2025).
 - XPRESS9 encoder is an attributed port of the MIT ESE C reference; matches byte-for-byte excluding the non-deterministic session signature.

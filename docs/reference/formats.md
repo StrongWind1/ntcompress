@@ -74,9 +74,11 @@ Authority: `[MS-XCA] §2.3/§2.4` v10.0. Available: Win8.1 through Server 2025.
 
 Authority: `[MS-XCA] §2.1/§2.2` v10.0. Available: Win8.1 through Server 2025.
 
-### Undocumented (0x0005)
+### Compact XPRESS9 (0x0005)
 
-Block magic `0xC039E510`. Unrelated to XPRESS9 despite sharing the ntdll slot number. No public specification or source code exists. Available: Server 2022+.
+10-byte header: u32 LE magic (`0xC039E510`) + u16 LE params (window log index and mode) + u32 LE control word (payload bit count, compressed flag, end-of-stream flag). Payload is a canonical-Huffman LZ77 bitstream (same algorithm as ESE XPRESS9) with a trailing 32-bit CRC-32C of the original plaintext. Uses a 2-bit Huffman table mode prefix (0 = stored flat lengths, 2 = Huffman-coded) instead of XPRESS9's 3-bit mode. Window sizes from 4 KB to 16 MB, controlled by the params field. DEFAULT and ENGINE_MAXIMUM produce identical output.
+
+No public specification exists. Reverse-engineered from `ntdll.dll` Build 20348 (decompressor at RVA 0x111810, Huffman builder at 0x114DA8, header parser at 0x115AB0). Available: Server 2022+.
 
 ### XP10 (0x0006)
 

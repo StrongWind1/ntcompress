@@ -67,10 +67,13 @@ plaintext = ntdll.decompress(compressed, ntdll.COMPRESSION_FORMAT_XPRESS_HUFF)
 Or use a format module directly:
 
 ```python
-from ntcompress.ntdll import lznt1
+from ntcompress.ntdll import lznt1, xpress9, xp10
 
 compressed = lznt1.compress(data)
 plaintext = lznt1.decompress(compressed)
+
+plaintext = xpress9.decompress(stream)   # format 0x0005 (compact XPRESS9)
+compressed = xp10.compress(data)         # format 0x0006 (LZ4 block)
 ```
 
 Some ntdll formats accept additional parameters:

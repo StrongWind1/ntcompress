@@ -20,10 +20,12 @@ The `Format` enum values match the `COMPRESSION_FORMAT_*` constants from `ntifs.
 | `LZNT1` | `0x0002` | `COMPRESSION_FORMAT_LZNT1` | Chunk-based LZ77 |
 | `XPRESS` | `0x0003` | `COMPRESSION_FORMAT_XPRESS` | Plain LZ77 |
 | `XPRESS_HUFF` | `0x0004` | `COMPRESSION_FORMAT_XPRESS_HUFF` | LZ77+Huffman |
-| `DEFLATE` | `0x0100` | Extension | Raw DEFLATE (RFC 1951) |
-| `ZLIB` | `0x0101` | Extension | ZLIB wrapper (RFC 1950) |
+| `XPRESS9` | `0x0005` | *(undocumented)* | Compact XPRESS9 (Huffman LZ77) |
+| `XP10` | `0x0006` | *(undocumented)* | Raw LZ4 block |
+| `DEFLATE` | `0x0007` | *(undocumented)* | Raw DEFLATE (RFC 1951) |
+| `ZLIB` | `0x0008` | *(undocumented)* | ZLIB wrapper (RFC 1950) |
 
-`DEFLATE` and `ZLIB` are library extensions at `0x0100+`, not Windows constants. They implement the same algorithms exposed by ntdll on Win11/Server 2025 (formats 0x0007 and 0x0008).
+All values are the real `CompressionFormatAndEngine` base-format constants from Windows. Formats 0x0005--0x0008 are not documented in `ntifs.h` but are implemented in `ntdll.dll` on the builds listed above.
 
 ## Windows constant aliases
 
@@ -47,7 +49,7 @@ compressed = xpress_huff.compress(data)
 plaintext = xpress_huff.decompress(compressed)
 ```
 
-Available modules: `lznt1`, `xpress`, `xpress_huff`, `deflate`, `zlib`.
+Available modules: `lznt1`, `xpress`, `xpress_huff`, `xpress9`, `xp10`, `deflate`, `zlib`.
 
 ## Format-specific parameters
 

@@ -40,12 +40,12 @@ Windows `ntdll.dll` exposes a separate set of `CompressionFormatAndEngine` IDs u
 | `0x0002` | LZNT1 | yes | yes | yes (ENGINE_MAX) | XP SP3 – Server 2025 |
 | `0x0003` | XPRESS (Plain LZ77) | yes | yes | yes | Win8.1 – Server 2025 |
 | `0x0004` | XPRESS_HUFF (LZ77+Huffman) | yes | yes | yes (default engine) | Win8.1 – Server 2025 |
-| `0x0005` | undocumented | — | — | — | Server 2022+ |
+| `0x0005` | Compact XPRESS9 | yes | yes | — | Server 2022+ |
 | `0x0006` | XP10 (LZ4 block) | yes | yes | yes | Win11 / Server 2025 |
 | `0x0007` | raw DEFLATE | yes | yes | yes (both levels) | Win11 / Server 2025 |
 | `0x0008` | ZLIB | yes | yes | yes (both levels) | Win11 / Server 2025 |
 
-ntdll format 0x0005 is an undocumented format (block magic `0xC039E510`) unrelated to XPRESS9 despite sharing the slot number. No public specification or source code exists. Format 0x0006 (XP10) is the same LZ4 block codec used by ESE scheme 0x6 and 0x7, without the ESE header.
+Format 0x0005 is an undocumented XPRESS9-family Huffman LZ77 codec (magic `0xC039E510`) with a compact 10-byte header, reverse-engineered from `ntdll.dll` Build 20348. It uses the same core algorithm as ESE XPRESS9 (magic `0x4E86D72A`) but with different outer framing. Format 0x0006 (XP10) is the same LZ4 block codec used by ESE scheme 0x6 and 0x7, without the ESE header.
 
 ## Design principles
 
@@ -107,13 +107,15 @@ plaintext = ntdll.decompress(compressed, ntdll.Format.LZNT1)
 compressed = ntdll.compress(data, ntdll.COMPRESSION_FORMAT_XPRESS_HUFF)
 
 # Shape B (direct module access)
-from ntcompress.ntdll import lznt1, xpress_huff, deflate
+from ntcompress.ntdll import lznt1, xpress_huff, xpress9, xp10, deflate
 from ntcompress.ntdll import zlib as ntdll_zlib
 
 plaintext = lznt1.decompress(compressed_stream)
 compressed = xpress_huff.compress(data)
-compressed = deflate.compress(data)            # matches ntdll 0x0007
-compressed = ntdll_zlib.compress(data)         # matches ntdll 0x0008
+plaintext = xpress9.decompress(stream)         # ntdll 0x0005 (compact XPRESS9)
+compressed = xp10.compress(data)               # ntdll 0x0006 (LZ4 block)
+compressed = deflate.compress(data)            # ntdll 0x0007
+compressed = ntdll_zlib.compress(data)         # ntdll 0x0008
 ```
 
 ## License and attribution

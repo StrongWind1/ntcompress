@@ -28,6 +28,8 @@ The `min(Length - 3, 15)` versus `min(Length, 15)` difference between [MS-XCA] r
 | LZNT1 (0x0002) | `[MS-XCA] §2.5` |
 | XPRESS (0x0003) | `[MS-XCA] §2.3/§2.4` |
 | XPRESS_HUFF (0x0004) | `[MS-XCA] §2.1/§2.2` |
+| Compact XPRESS9 (0x0005) | Reverse-engineered from `ntdll.dll` Build 20348 (RVA 0x111810, 0x114DA8, 0x115AB0) |
+| XP10 (0x0006) | `lz4_Block_format.md` (same payload as ESE 0x6/0x7) |
 | DEFLATE (0x0007) | RFC 1951 |
 | ZLIB (0x0008) | RFC 1950 |
 
@@ -37,7 +39,7 @@ PE export and strings analysis of the shipping Windows binaries (Server 2025 Bui
 
 | Binary | Compression exports | Internal strings |
 |--------|-------------------|------------------|
-| `ntdll.dll` | `RtlCompressBuffer`, `RtlDecompressBuffer`, `RtlDecompressBufferEx`, `RtlDecompressFragment`, `RtlGetCompressionWorkSpaceSize` | `unknown compression method` |
+| `ntdll.dll` | `RtlCompressBuffer`, `RtlDecompressBuffer`, `RtlDecompressBufferEx`, `RtlDecompressFragment`, `RtlGetCompressionWorkSpaceSize` | `unknown compression method`. Format dispatch tables at RVA 0x173F30 (compress), 0x173F80 (decompress), 0x173FE0 (workspace) on Build 26100; 0x128088, 0x128028, 0x128058 on Build 20348. |
 | `esent.dll` | *(none)* | `JET_paramFlight_EnableXpress10Compression`, `JET_paramMinDataForXpress`, `Lz4CompressionVerificationFailed`, `onecore\ds\esent\src\ese\compression.cxx` |
 
 All format-specific codecs (LZNT1, XPRESS, XPRESS_HUFF, XP10, XPRESS9) are dispatched internally by numeric format ID. No format-specific function names appear in the export tables or string tables of either DLL. The XPRESS9 functions (`Xpress9DecoderCreate`, `Xpress9EncoderCreate`, etc.) are statically linked inside `esent.dll` and not exported.
