@@ -60,7 +60,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ALL"]
-"src/**/xpress9.py" = ["C901", "PLR0912", "PLR0915", "PLR2004"]
+"src/**/xpress9.py" = ["C901", "PLR0912", "PLR0915", "PLR0917", "PLR2004"]
 
 [tool.ruff.lint.flake8-copyright]
 notice-rgx = "(?i)# SPDX-License-Identifier"
