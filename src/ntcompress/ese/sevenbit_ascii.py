@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_7BITASCII (0x1) -- 7-bit ASCII packing for ESE records.
 
 Authority: ``ErrCompress7BitAscii_`` (compression.cxx:1168-1387) and

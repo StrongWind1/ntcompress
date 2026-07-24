@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """MS-XCA Plain LZ77 (LZXPRESS) raw stream codec (``COMPRESSION_FORMAT_XPRESS``, 0x0003).
 
 This is the canonical home for the raw Plain LZ77 codec. The ESE XPRESS (scheme 0x3)

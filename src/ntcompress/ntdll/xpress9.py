@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Compact XPRESS9 codec (``COMPRESSION_FORMAT_XPRESS9``, 0x0005).
 
 Undocumented ntdll.dll compression format introduced in Windows Server 2022

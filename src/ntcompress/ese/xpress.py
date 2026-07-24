@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_XPRESS (0x3) -- ESE record framing over MS-XCA Plain LZ77.
 
 Implements the ESE scheme ``COMPRESS_XPRESS``: a 3-byte header (scheme byte + u16

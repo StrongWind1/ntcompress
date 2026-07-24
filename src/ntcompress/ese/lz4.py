@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_LZ4 (0x7) -- ESE record framing over the standard LZ4 block format.
 
 ESE does not define its own codec here: it links the reference liblz4 and calls

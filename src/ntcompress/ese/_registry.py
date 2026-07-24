@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Internal dispatch table for ESE compression formats.
 
 Maps :class:`Format` enum members to the modules that implement them. Each codec

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_SCRUB (0x4) -- a data-erasure marker, not a codec.
 
 SCRUB does not compress anything: database maintenance and repair overwrite an

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """MS-XCA LZNT1 raw codec (``COMPRESSION_FORMAT_LZNT1``, 0x0002).
 
 Standalone MS-XCA codec operating on a bare stream. An LZNT1 buffer is a series of

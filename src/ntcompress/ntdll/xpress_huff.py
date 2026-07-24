@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """MS-XCA LZ77+Huffman raw codec (``COMPRESSION_FORMAT_XPRESS_HUFF``, 0x0004).
 
 Standalone MS-XCA codec operating on a bare stream. Data is processed in 64 KiB

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_7BITUNICODE (0x2) -- 7-bit Unicode packing for ESE records.
 
 Identical bitstream to 7BITASCII; only the source stride (2 bytes) and the

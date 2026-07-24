@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_XPRESS9 (0x5) -- pure-Python XPRESS9 codec.
 
 XPRESS9 has no public byte-format specification: ``[MS-XCA]`` does not cover it, and

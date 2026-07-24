@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """XP10 raw LZ4 block codec (``COMPRESSION_FORMAT_XP10``, 0x0006).
 
 Windows ntdll.dll exposes raw LZ4 block compression as ``CompressionFormatAndEngine``

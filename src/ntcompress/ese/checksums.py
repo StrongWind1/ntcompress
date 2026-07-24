@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Checksums used by ESE compression headers.
 
 Two non-stdlib CRCs are required, and both are implemented here from their literal

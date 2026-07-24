@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """ZLIB codec (ntdll format 0x0008, library extension ``Format.ZLIB``).
 
 Windows ntdll.dll exposes ZLIB as ``CompressionFormatAndEngine`` 0x0008

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Pure-Python codecs for Microsoft ESE record-compression and Windows ntdll compression formats.
 
 ``ntcompress`` compresses and decompresses all ESE record schemes (7-bit ASCII/Unicode,

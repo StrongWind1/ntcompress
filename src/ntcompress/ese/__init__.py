@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """ESE (Extensible Storage Engine) record-compression formats.
 
 Provides both Shape A (enum dispatch) and Shape B (direct module import) APIs for

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Exception hierarchy for :mod:`ntcompress`.
 
 All errors derive from :class:`CompressionLibError`, so callers can catch the whole

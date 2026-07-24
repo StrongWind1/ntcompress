@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """COMPRESS_XPRESS10 (0x6) -- ESE framing over the LZ4 block payload format.
 
 The XPRESS10 record carries a packed 15-byte header (scheme byte, u16 LE

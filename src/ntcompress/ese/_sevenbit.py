@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Internal shared helpers for 7-bit ASCII and Unicode codecs.
 
 These two schemes share their framing and packer, so the common infrastructure lives

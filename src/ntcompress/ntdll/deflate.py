@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Raw DEFLATE codec (ntdll format 0x0007, library extension ``Format.DEFLATE``).
 
 Windows ntdll.dll exposes raw DEFLATE as ``CompressionFormatAndEngine`` 0x0007
