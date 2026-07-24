@@ -1,6 +1,6 @@
 [project]
 name = "ntcompress"
-version = "0.3.0"
+version = "0.3.1"
 description = "Pure-Python implementations of every Microsoft ESE record-compression scheme and Windows ntdll RtlCompressBuffer/RtlDecompressBuffer format."
 readme = "README.md"
 requires-python = ">=3.10"
