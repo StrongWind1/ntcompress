@@ -90,6 +90,7 @@ cell = ese.compress(plaintext, ese.Format.XPRESS9)
 
 # Or use Shape B (direct module access)
 from ntcompress.ese import xpress
+
 cell = xpress.compress(plaintext)
 plaintext = xpress.decompress(cell)
 ```
@@ -112,10 +113,10 @@ from ntcompress.ntdll import zlib as ntdll_zlib
 
 plaintext = lznt1.decompress(compressed_stream)
 compressed = xpress_huff.compress(data)
-plaintext = xpress9.decompress(stream)         # ntdll 0x0005 (compact XPRESS9)
-compressed = xp10.compress(data)               # ntdll 0x0006 (LZ4 block)
-compressed = deflate.compress(data)            # ntdll 0x0007
-compressed = ntdll_zlib.compress(data)         # ntdll 0x0008
+plaintext = xpress9.decompress(stream)  # ntdll 0x0005 (compact XPRESS9)
+compressed = xp10.compress(data)  # ntdll 0x0006 (LZ4 block)
+compressed = deflate.compress(data)  # ntdll 0x0007
+compressed = ntdll_zlib.compress(data)  # ntdll 0x0008
 ```
 
 ## License and attribution

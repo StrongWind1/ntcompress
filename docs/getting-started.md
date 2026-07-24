@@ -42,7 +42,7 @@ size = xpress.decompressed_size(cell)
 Read the format ID from a cell's header byte without decompressing:
 
 ```python
-fmt_id = ese.format_id(cell[0])    # 5-bit format ID (0--31)
+fmt_id = ese.format_id(cell[0])  # 5-bit format ID (0--31)
 flags = ese.format_flags(cell[0])  # 3-bit format-specific flags
 ```
 
@@ -72,8 +72,8 @@ from ntcompress.ntdll import lznt1, xpress9, xp10
 compressed = lznt1.compress(data)
 plaintext = lznt1.decompress(compressed)
 
-plaintext = xpress9.decompress(stream)   # format 0x0005 (compact XPRESS9)
-compressed = xp10.compress(data)         # format 0x0006 (LZ4 block)
+plaintext = xpress9.decompress(stream)  # format 0x0005 (compact XPRESS9)
+compressed = xp10.compress(data)  # format 0x0006 (LZ4 block)
 ```
 
 Some ntdll formats accept additional parameters:
@@ -83,7 +83,7 @@ from ntcompress.ntdll import deflate
 from ntcompress.ntdll import zlib as ntdll_zlib
 
 # level controls compression effort (default 1 matches ntdll default engine)
-compressed = deflate.compress(data, level=7)   # matches ntdll ENGINE_MAXIMUM
+compressed = deflate.compress(data, level=7)  # matches ntdll ENGINE_MAXIMUM
 compressed = ntdll_zlib.compress(data, level=7)
 
 # max_size limits decoded output

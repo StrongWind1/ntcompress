@@ -41,10 +41,12 @@ compressed = ntdll.compress(data, ntdll.COMPRESSION_FORMAT_XPRESS_HUFF)
 
 ```python
 from ntcompress.ntdll import lznt1
+
 compressed = lznt1.compress(data)
 plaintext = lznt1.decompress(compressed)
 
 from ntcompress.ntdll import xpress_huff
+
 compressed = xpress_huff.compress(data)
 plaintext = xpress_huff.decompress(compressed)
 ```
@@ -64,7 +66,7 @@ plaintext = xpress.decompress(compressed, max_size=65536)
 plaintext = deflate.decompress(compressed, max_size=65536)
 
 # level controls compression effort (default 1 matches ntdll default engine)
-compressed = deflate.compress(data, level=7)   # matches ntdll ENGINE_MAXIMUM
+compressed = deflate.compress(data, level=7)  # matches ntdll ENGINE_MAXIMUM
 compressed = ntdll_zlib.compress(data, level=7)
 ```
 

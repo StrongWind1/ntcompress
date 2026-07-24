@@ -10,8 +10,8 @@ Compress and decompress ESE cells by format enum:
 import ntcompress.ese as ese
 
 cell = ese.compress(data, ese.Format.XPRESS)
-plaintext = ese.decompress(cell)                    # auto-detects format
-plaintext = ese.decompress(cell, ese.Format.XPRESS) # explicit format
+plaintext = ese.decompress(cell)  # auto-detects format
+plaintext = ese.decompress(cell, ese.Format.XPRESS)  # explicit format
 size = ese.decompressed_size(cell)
 ```
 
@@ -37,6 +37,7 @@ Each format is a separate module with `compress()`, `decompress()`, and `decompr
 
 ```python
 from ntcompress.ese import xpress
+
 cell = xpress.compress(data)
 plaintext = xpress.decompress(cell)
 size = xpress.decompressed_size(cell)
@@ -48,7 +49,8 @@ Formats with integrity checksums accept a `verify` parameter on `decompress()`:
 
 ```python
 from ntcompress.ese import xpress10
-plaintext = xpress10.decompress(cell, verify=True)   # default
+
+plaintext = xpress10.decompress(cell, verify=True)  # default
 plaintext = xpress10.decompress(cell, verify=False)  # skip CRC checks
 ```
 
@@ -59,8 +61,8 @@ Read format information from an ESE cell's header byte:
 ```python
 import ntcompress.ese as ese
 
-fmt_id = ese.format_id(cell[0])     # 5-bit format ID
-flags = ese.format_flags(cell[0])   # 3-bit format-specific flags
+fmt_id = ese.format_id(cell[0])  # 5-bit format ID
+flags = ese.format_flags(cell[0])  # 3-bit format-specific flags
 header = ese.header_byte(ese.Format.XPRESS, flags=0)  # build a header byte
 ```
 
@@ -85,6 +87,6 @@ ESE XPRESS10 cells use CRC-32C and CRC-64/NVME checksums:
 ```python
 from ntcompress.ese.checksums import crc32c_ese, crc64_ese
 
-crc32 = crc32c_ese(data)   # CRC-32C (Castagnoli)
-crc64 = crc64_ese(data)    # CRC-64/NVME
+crc32 = crc32c_ese(data)  # CRC-32C (Castagnoli)
+crc64 = crc64_ese(data)  # CRC-64/NVME
 ```
