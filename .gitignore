@@ -15,6 +15,7 @@ site/
 .venv/
 
 # Tooling caches
+.cache/
 .ruff_cache/
 .pytest_cache/
 .ty/
