@@ -15,10 +15,12 @@
  */
 
 :root > * {
-  /* Header, tabs, footer */
-  --md-primary-fg-color: #272113;
-  --md-primary-fg-color--light: #3c321d;
-  --md-primary-fg-color--dark: #18140b;
+  /* Header and tabs. Lightness is chosen so the bar separates from the page by
+   * the same amount on every site (~2:1); a fixed value would not, since at equal
+   * lightness a blue header reads far darker than a yellow one. */
+  --md-primary-fg-color: #245761;
+  --md-primary-fg-color--light: #2c6b77;
+  --md-primary-fg-color--dark: #1c434a;
 
   /* Text drawn on top of the header bar */
   --md-primary-bg-color: #ffffff;
@@ -34,21 +36,23 @@
  * solved to clear WCAG AA (4.5:1) against the scheme it renders on.
  *
  * --md-typeset-a-color is set explicitly because Material defaults it to
- * var(--md-primary-fg-color). With a primary this dark that renders body links in
- * near-black, indistinguishable from surrounding text. */
+ * var(--md-primary-fg-color), which renders body links in the header colour. */
 
 [data-md-color-scheme="slate"] {
-  /* Tints all 19 hsl-derived slate surfaces -- page, code, footer, tables -- to
-   * this site's hue, instead of hardcoding each one. */
-  --md-hue: 42;
+  /* Material's own default. Deliberately NOT the site hue: --md-hue drives all 19
+   * hsl-derived slate surfaces -- page, code blocks, footer, tables -- so tinting
+   * it per site colours the entire page and hurts readability. Backgrounds are
+   * identical and neutral across all eleven sites; only the header and accent
+   * carry the site identity. */
+  --md-hue: 225deg;
 
-  --md-accent-fg-color: #e9db63;
-  --md-accent-fg-color--transparent: #e9db631a;
-  --md-typeset-a-color: #e9db63;
+  --md-accent-fg-color: #63b8e9;
+  --md-accent-fg-color--transparent: #63b8e91a;
+  --md-typeset-a-color: #63b8e9;
 }
 
 [data-md-color-scheme="default"] {
-  --md-accent-fg-color: #7f7305;
-  --md-accent-fg-color--transparent: #7f73051a;
-  --md-typeset-a-color: #7f7305;
+  --md-accent-fg-color: #066298;
+  --md-accent-fg-color--transparent: #0662981a;
+  --md-typeset-a-color: #066298;
 }
