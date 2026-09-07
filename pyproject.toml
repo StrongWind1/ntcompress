@@ -1,13 +1,30 @@
+[build-system]
+requires = ["uv_build>=0.11.12,<0.12.0"]
+build-backend = "uv_build"
+
 [project]
 name = "ntcompress"
 version = "0.3.1"
 description = "Pure-Python implementations of every Microsoft ESE record-compression scheme and Windows ntdll RtlCompressBuffer/RtlDecompressBuffer format."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.15"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "ntcompress contributors" }]
-keywords = ["ese", "esent", "jet", "ntdll", "xpress", "xpress9", "xpress10", "lznt1", "lz4", "ms-xca", "compression", "forensics"]
+keywords = [
+  "ese",
+  "esent",
+  "jet",
+  "ntdll",
+  "xpress",
+  "xpress9",
+  "xpress10",
+  "lznt1",
+  "lz4",
+  "ms-xca",
+  "compression",
+  "forensics",
+]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Intended Audience :: Developers",
@@ -31,16 +48,13 @@ Issues = "https://github.com/StrongWind1/ntcompress/issues"
 
 [dependency-groups]
 dev = [
-    "pytest",
-    "hypothesis",
-    "ruff",
-    "ty",
+  "pytest>=8.0",
+  "hypothesis",
+  "ruff>=0.11",
+  "ty>=0.0.1a7",
+  "pre-commit>=4.0",
 ]
 docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
-
-[build-system]
-requires = ["uv_build>=0.11.12,<0.12.0"]
-build-backend = "uv_build"
 
 [tool.ruff]
 target-version = "py310"
@@ -50,12 +64,12 @@ src = ["src"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "COM812",   # Trailing comma - conflicts with the ruff formatter
-    "ISC001",   # Implicit string concat - conflicts with the ruff formatter
-    "D203",     # No blank line before class docstring - conflicts with D211
-    "D213",     # Multi-line docstring summary on second line - conflicts with D212
-    "PLR0913",  # Too many arguments - wire-format and decoder functions legitimately need many params
-    "PLC0415",  # Import not at top level - deferred imports used pervasively for circular-import avoidance between ese/__init__.py and format modules
+  "COM812",  # Trailing comma - conflicts with the ruff formatter
+  "ISC001",  # Implicit string concat - conflicts with the ruff formatter
+  "D203",    # No blank line before class docstring - conflicts with D211
+  "D213",    # Multi-line docstring summary on second line - conflicts with D212
+  "PLR0913", # Too many arguments - wire-format and decoder functions legitimately need many params
+  "PLC0415", # Import not at top level - deferred imports used pervasively for circular-import avoidance between ese/__init__.py and format modules
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -77,6 +91,12 @@ all = "error"
 
 [tool.ty.terminal]
 error-on-warning = true
+
+[tool.ty.analysis]
+allowed-unresolved-imports = []
+strict-equality-semantics = true
+strict-generic-narrowing = true
+respect-type-ignore-comments = false
 
 [[tool.ty.overrides]]
 include = ["tests/**"]
