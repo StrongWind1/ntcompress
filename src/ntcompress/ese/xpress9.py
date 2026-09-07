@@ -239,7 +239,7 @@ class _CanonicalHuffman:
             code = (code << 1) | reader.read(1)
             delta = code - self._first_code[length]
             if delta < self._counts[length]:
-                return self._symbols[self._base_index[length] + delta]
+                return int(self._symbols[self._base_index[length] + delta])
         # Unreachable for a full tree (every bit path terminates), kept as a guard.
         msg = "XPRESS9 Huffman codeword exceeds the table's maximum length"
         raise DecompressionError(msg)
@@ -657,7 +657,7 @@ def _parse_outer(blob: Buffer) -> tuple[int, bytes]:
     if format_id(scheme_byte) != Format.XPRESS9:
         msg = f"expected format XPRESS9 (0x{Format.XPRESS9:x}) but header byte 0x{scheme_byte:02x} carries format 0x{format_id(scheme_byte):x}"
         raise DecompressionError(msg)
-    (stored_crc,) = struct.unpack_from("<I", view, 1)
+    stored_crc = int(struct.unpack_from("<I", view, 1)[0])
     return stored_crc, bytes(view[HEADER_SIZE:])
 
 
@@ -1290,7 +1290,7 @@ def _chain_lookup(data: bytes | bytearray, pos: int, data_size: int, p_next: lis
         candidate = p_next[found_candidate]
 
     p_next[0] = saved_next_0
-    return best_offset, best_len
+    return int(best_offset), best_len
 
 
 def _check_mtf(data: bytes | bytearray, pos: int, i_offset: int, data_size: int) -> int:

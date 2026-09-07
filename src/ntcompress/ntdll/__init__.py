@@ -22,7 +22,7 @@ Shape B (direct module)::
 from __future__ import annotations
 
 from enum import IntEnum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from ntcompress.ntdll._registry import _get, _register
 
@@ -90,7 +90,7 @@ def compress(data: Buffer, fmt: Format) -> bytes:
     Raises:
         FormatUnavailableError: No codec is registered for the format.
     """
-    return _get(fmt).compress(data)
+    return cast("bytes", _get(fmt).compress(data))
 
 
 def decompress(blob: Buffer, fmt: Format) -> bytes:
@@ -109,7 +109,7 @@ def decompress(blob: Buffer, fmt: Format) -> bytes:
     Raises:
         FormatUnavailableError: No codec is registered for the format.
     """
-    return _get(fmt).decompress(blob)
+    return cast("bytes", _get(fmt).decompress(blob))
 
 
 # --- Auto-registration of codec modules ---

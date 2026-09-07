@@ -22,7 +22,7 @@ Shape B (direct module)::
 from __future__ import annotations
 
 from enum import IntEnum
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING, Final, cast
 
 from ntcompress.ese._registry import _get, _register
 from ntcompress.exceptions import (
@@ -154,7 +154,7 @@ def compress(data: Buffer, fmt: Format) -> bytes:
     if not hasattr(module, "compress"):
         msg = f"format {fmt.name} (0x{fmt.value:x}) is decode-only; no encoder is available"
         raise FormatUnavailableError(msg)
-    return module.compress(data)
+    return cast("bytes", module.compress(data))
 
 
 def decompress(blob: Buffer, fmt: Format | None = None) -> bytes:
@@ -182,7 +182,7 @@ def decompress(blob: Buffer, fmt: Format | None = None) -> bytes:
     if fmt is Format.MAXIMUM:
         msg = "Format.MAXIMUM is a sentinel value, not a compression format"
         raise DecompressionError(msg)
-    return _get(fmt).decompress(blob)
+    return cast("bytes", _get(fmt).decompress(blob))
 
 
 def decompressed_size(blob: Buffer) -> int:
@@ -202,7 +202,7 @@ def decompressed_size(blob: Buffer) -> int:
     if fmt is Format.SCRUB:
         msg = "record is a SCRUB erase marker; it has no decompressed size — use ntcompress.ese.scrub"
         raise ScrubDetectedError(msg)
-    return _get(fmt).decompressed_size(blob)
+    return cast("int", _get(fmt).decompressed_size(blob))
 
 
 # --- Auto-registration of codec modules ---

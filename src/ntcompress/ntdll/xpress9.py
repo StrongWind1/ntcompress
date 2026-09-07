@@ -81,10 +81,10 @@ def _parse_header(data: Buffer) -> tuple[int, int, bool, int]:
     params = struct.unpack_from("<H", data, 4)[0]
     control = struct.unpack_from("<I", data, 6)[0]
 
-    window_log = _WINDOW_LOG_TABLE[params & 0x07]
-    payload_bits = control & 0x0FFF_FFFF
+    window_log = int(_WINDOW_LOG_TABLE[params & 0x07])
+    payload_bits = int(control & 0x0FFF_FFFF)
     compressed = bool(control & (1 << 29))
-    comp_bits = payload_bits - 32 if compressed else 0
+    comp_bits: int = payload_bits - 32 if compressed else 0
 
     return window_log, payload_bits, compressed, comp_bits
 

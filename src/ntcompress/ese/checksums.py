@@ -73,9 +73,9 @@ def crc32c_ese(data: Buffer) -> int:
     Returns:
         The 32-bit CRC-32C. ``crc32c_ese(b"123456789") == 0xE3069283``.
     """
-    crc = _MASK32
+    crc = int(_MASK32)
     for byte in data:
-        crc = (crc >> 8) ^ _CRC32C_TABLE[(crc ^ byte) & 0xFF]
+        crc = int((crc >> 8) ^ _CRC32C_TABLE[(crc ^ int(byte)) & 0xFF])
     return crc ^ _MASK32
 
 
@@ -92,7 +92,7 @@ def crc64_ese(data: Buffer) -> int:
     Returns:
         The 64-bit CRC. ``crc64_ese(b"123456789") == 0xAE8B14860A799888``.
     """
-    crc = _MASK64
+    crc = int(_MASK64)
     for byte in data:
-        crc = (crc >> 8) ^ _CRC64_TABLE[(crc ^ byte) & 0xFF]
+        crc = int((crc >> 8) ^ _CRC64_TABLE[(crc ^ int(byte)) & 0xFF])
     return crc ^ _MASK64
