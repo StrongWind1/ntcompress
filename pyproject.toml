@@ -54,7 +54,7 @@ dev = [
   "ty>=0.0.1a7",
   "pre-commit>=4.0",
 ]
-docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]"]
+docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]", "pymdown-extensions<12"]
 
 [tool.ruff]
 target-version = "py310"
