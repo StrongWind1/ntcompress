@@ -4,11 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.4.0] - 2026-11-19
+
+### Added
+
+- `ntcompress.ntdll.xpress_huff.decompress` accepts `uncompressed_size`. With it, decoding stops at that length as [MS-XCA] §2.2.4 specifies, and symbol 256 is always a match.
 
 ### Changed
 
 - Minimum Python version raised from 3.10 to 3.11.
+
+### Fixed
+
+- XPRESS9 compressor: a slot-0 MTF hit no longer reorders the MTF list. The C encoder skips `UPDATE_MTF` for slot 0, and so does every decoder, so the old output decoded to the wrong bytes, in ours and in the reference C codec, whenever a later MTF hit relied on the list. Roughly half of a 200-input fuzz run was affected, down to inputs of 24 bytes.
+- Xpress Huffman decompressor: symbol 256 is decoded as the (length 3, distance 1) match it doubles as, unless the input is exhausted and only zero bits remain. `RtlCompressBuffer` emits it as a match, and those streams used to stop at the first one.
 
 ## [0.3.0] - 2026-07-15
 
