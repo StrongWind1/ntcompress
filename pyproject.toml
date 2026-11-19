@@ -1,5 +1,6 @@
 [build-system]
-requires = ["uv_build>=0.11.12,<0.12.0"]
+# uv_build may ship breaking changes in a minor release, so uv requires an upper bound here to keep old sdists buildable.
+requires = ["uv_build>=0.11.12,<0.14"]
 build-backend = "uv_build"
 
 [project]
@@ -54,7 +55,14 @@ dev = [
   "ty>=0.0.1a7",
   "pre-commit>=4.0",
 ]
-docs = ["mkdocs", "mkdocs-material", "mkdocstrings[python]", "pymdown-extensions<12"]
+docs = [
+  "mkdocs",
+  "mkdocs-material",
+  "mkdocstrings[python]",
+  "pymdown-extensions",
+  # mkdocstrings 1.0.6 is the last release for Python 3.10 and fails on pymdown-extensions 12.2+ (Highlight now requires md); 1.0.7 fixed it but needs Python 3.11.
+  "pymdown-extensions<12.2; python_full_version < '3.11'",
+]
 
 [tool.ruff]
 target-version = "py310"
