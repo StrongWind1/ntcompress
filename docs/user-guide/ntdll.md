@@ -58,12 +58,16 @@ Available modules: `lznt1`, `xpress`, `xpress_huff`, `xpress9`, `xp10`, `deflate
 Some formats accept additional parameters:
 
 ```python
-from ntcompress.ntdll import xpress, deflate
+from ntcompress.ntdll import deflate, xpress, xpress_huff
 from ntcompress.ntdll import zlib as ntdll_zlib
 
 # max_size limits decoded output (prevents decompression bombs)
 plaintext = xpress.decompress(compressed, max_size=65536)
 plaintext = deflate.decompress(compressed, max_size=65536)
+
+# uncompressed_size gives Xpress Huffman the exact decoded length, which [MS-XCA]
+# needs to tell symbol 256 as a match from symbol 256 as EOF in every stream
+plaintext = xpress_huff.decompress(compressed, uncompressed_size=len(data))
 
 # level controls compression effort (default 1 matches ntdll default engine)
 compressed = deflate.compress(data, level=7)  # matches ntdll ENGINE_MAXIMUM

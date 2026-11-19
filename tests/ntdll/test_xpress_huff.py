@@ -111,20 +111,58 @@ def test_empty_encodes_single_eof_block() -> None:
 
 @pytest.mark.parametrize("data", [b"AAAA", b"aaaa", b"1234123", b"xyxyxyx", b"ababab", b"AAAAB"])
 def test_roundtrip_short_repeats_no_eof_collision(data: bytes) -> None:
-    # A (length 3, distance 1) match encodes to _match_symbol == EOF_SYMBOL (256), which
-    # the decoder reads as end-of-stream. The encoder must emit a literal for that case,
-    # or these short repeats decode to a truncated prefix (e.g. b"AAAA" -> b"A").
+    # A (length 3, distance 1) match encodes to _match_symbol == EOF_SYMBOL (256). The
+    # encoder emits a literal for that case so its output never needs the decoded size
+    # to tell the match from end-of-stream.
     assert xpress_huff.decompress(xpress_huff.compress(data)) == data
 
 
 def test_no_match_symbol_collides_with_eof() -> None:
     # Exhaustive guard on the encoder's match-symbol space: only (3, 1) hits 256, and
-    # _lz77 must never emit it as a match.
+    # _lz77 never emits it as a match.
     assert xpress_huff._match_symbol(3, 1) == xpress_huff.EOF_SYMBOL
     for length in range(3, 300):
         for distance in (1, 2, 3, 255, 8192, 65535):
             symbol = xpress_huff._match_symbol(length, distance)
             assert (length, distance) == (3, 1) or symbol > xpress_huff.EOF_SYMBOL
+
+
+@pytest.mark.parametrize(
+    ("tokens", "expected"),
+    [
+        pytest.param([("L", 0x61, 0), ("M", 3, 1), ("L", 0x62, 0)], b"aaaab", id="mid-stream"),
+        pytest.param([("L", 0x61, 0), ("M", 3, 1)], b"aaaa", id="before-eof"),
+        pytest.param([("L", 0x61, 0), ("M", 3, 1), ("L", 0x62, 0), ("M", 3, 1), ("L", 0x63, 0)], b"aaaabbbbc", id="repeated"),
+    ],
+)
+def test_symbol_256_match_is_not_eof(tokens: list[tuple[str, int, int]], expected: bytes) -> None:
+    # Windows RtlCompressBuffer emits the (length 3, distance 1) match as symbol 256. Away
+    # from the end of the input it is a match, not end-of-stream (§2.2.4).
+    compressed = xpress_huff._encode_block(tokens, is_last=True)
+    assert xpress_huff.decompress(compressed) == expected
+    assert xpress_huff.decompress(compressed, uncompressed_size=len(expected)) == expected
+
+
+def test_symbol_256_match_at_end_needs_uncompressed_size() -> None:
+    # Symbol 256 is the most frequent here, so it gets the all-zero code. A trailing match
+    # is then followed only by zero bits, which only the decoded size can tell from EOF.
+    tokens = [("L", 0x61, 0), ("M", 3, 1), ("M", 3, 1), ("L", 0x62, 0), ("M", 3, 1)]
+    compressed = xpress_huff._encode_block(tokens, is_last=True)
+    assert xpress_huff.decompress(compressed, uncompressed_size=11) == b"aaaaaaabbbb"
+
+
+def test_uncompressed_size_roundtrip_multi_block() -> None:
+    data = (b"multi-block payload " * 4000)[:80000]
+    compressed = xpress_huff.compress(data)
+    assert xpress_huff.decompress(compressed, uncompressed_size=len(data)) == data
+    # A shorter size stops there; the stream opens with 20 literals.
+    assert xpress_huff.decompress(compressed, uncompressed_size=5) == data[:5]
+
+
+def test_uncompressed_size_larger_than_stream_rejected() -> None:
+    compressed = xpress_huff.compress(b"abc")
+    with pytest.raises(DecompressionError):
+        xpress_huff.decompress(compressed, uncompressed_size=4)
 
 
 def test_decompress_max_size_rejects_bomb() -> None:

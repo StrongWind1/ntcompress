@@ -70,7 +70,7 @@ Authority: `[MS-XCA] §2.3/§2.4` v10.0. Available: Win8.1 through Server 2025.
 
 ### XPRESS_HUFF / LZ77+Huffman (0x0004)
 
-64 KiB blocks, each with a 256-byte canonical Huffman code-length table (512 symbols x 4 bits). Symbols 0--255 are literals, 256 is EOF, 257--511 are matches. Match-length ladder: nibble -> byte -> uint16 -> uint32 (v10.0).
+64 KiB blocks, each with a 256-byte canonical Huffman code-length table (512 symbols x 4 bits). Symbols 0--255 are literals, 256 is EOF, 257--511 are matches. Symbol 256 is also the (length 3, distance 1) match and Windows emits it as one, so it only ends the stream at the end of the input, or once the expected decompressed size is reached. Match-length ladder: nibble -> byte -> uint16 -> uint32 (v10.0).
 
 Authority: `[MS-XCA] §2.1/§2.2` v10.0. Available: Win8.1 through Server 2025.
 

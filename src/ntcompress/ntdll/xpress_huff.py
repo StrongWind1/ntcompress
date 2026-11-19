@@ -5,7 +5,9 @@ Standalone MS-XCA codec operating on a bare stream. Data is processed in 64 KiB
 blocks; each block begins with a 256-byte table giving the 4-bit code length of all
 512 Huffman symbols (0-255 literals, 256 EOF, 257-511 matches), followed by the
 Huffman-coded literals and matches read as 16-bit little-endian chunks through a
-32-bit register. The whole stream ends with the EOF symbol (256).
+32-bit register. The whole stream ends with the EOF symbol (256), which is also the
+(length 3, distance 1) match symbol, so it only ends the stream once the input is
+fully read and nothing but zero bits remain.
 
 This targets ``[MS-XCA]`` v10.0: the match-length continuation is nibble -> byte ->
 ``uint16`` -> (v10.0) ``uint32``, removing the old 65,538-byte cap.
@@ -191,25 +193,62 @@ def _copy_match(out: bytearray, offset: int, length: int) -> None:
         out.append(out[start + i])
 
 
-def decompress(data: Buffer, /, *, max_size: int | None = None) -> bytes:
+def _check_limits(produced: int, *, max_size: int | None, uncompressed_size: int | None) -> None:
+    """Raise if ``produced`` decoded bytes would exceed ``max_size`` or ``uncompressed_size``."""
+    if max_size is not None and produced > max_size:
+        msg = f"decoded output would exceed the {max_size}-byte limit"
+        raise DecompressionError(msg)
+    if uncompressed_size is not None and produced > uncompressed_size:
+        msg = f"match runs past the {uncompressed_size}-byte uncompressed size"
+        raise DecompressionError(msg)
+
+
+def _decode_block(reader: _BitReader, lengths: list[int], table: list[int], out: bytearray, block_end: int, *, max_size: int | None, uncompressed_size: int | None) -> bool:
+    """Decode one block's symbols into ``out`` up to ``block_end``; return True at the EOF symbol."""
+    while len(out) < block_end:
+        symbol = table[reader.peek15()]
+        reader.take(lengths[symbol])
+        if symbol < EOF_SYMBOL:
+            _check_limits(len(out) + 1, max_size=max_size, uncompressed_size=uncompressed_size)
+            out.append(symbol)
+            continue
+        if symbol == EOF_SYMBOL and uncompressed_size is None and reader.pos >= len(reader.data) and not reader.register:
+            return True
+        match = symbol - EOF_SYMBOL
+        length = _decode_match_length(reader, match & 0x0F)
+        offset_bits = match >> 4
+        offset = reader.take(offset_bits) + (1 << offset_bits)
+        _check_limits(len(out) + length, max_size=max_size, uncompressed_size=uncompressed_size)
+        _copy_match(out, offset, length)
+    return False
+
+
+def decompress(data: Buffer, /, *, max_size: int | None = None, uncompressed_size: int | None = None) -> bytes:
     """Decode a raw MS-XCA LZ77+Huffman stream to plaintext (per [MS-XCA] §2.2).
 
-    Processes 64 KiB blocks in order, each led by its own 256-byte Huffman table,
-    until the EOF symbol (256) is decoded.
+    Processes 64 KiB blocks in order, each led by its own 256-byte Huffman table.
+    Symbol 256 is both the EOF symbol and the (length 3, distance 1) match, and
+    Windows emits it as a match. §2.2.4 tells the two apart by the expected
+    decompressed size, so pass ``uncompressed_size`` whenever it is known.
+    Without it, symbol 256 ends the stream only once the input is fully read and
+    nothing but zero bits remain, which misreads a stream whose final token is
+    such a match while 256 has the all-zero code.
 
     Args:
         data: The raw LZ77+Huffman stream.
         max_size: Optional ceiling on the decoded length.
+        uncompressed_size: The exact decoded length, if known. Decoding stops
+            there instead of at the EOF symbol.
 
     Raises:
-        DecompressionError: Any read past the end, malformed Huffman table, or output
-            exceeding ``max_size``.
+        DecompressionError: Any read past the end, malformed Huffman table, output
+            exceeding ``max_size``, or output not matching ``uncompressed_size``.
     """
     data = bytes(data)
     out = bytearray()
     pos = 0
     total = len(data)
-    while pos < total:
+    while pos < total and (uncompressed_size is None or len(out) < uncompressed_size):
         if total - pos < TABLE_SIZE:
             if not out:
                 msg = "compressed stream ends before any block table or EOF symbol"
@@ -217,29 +256,16 @@ def decompress(data: Buffer, /, *, max_size: int | None = None) -> bytes:
             break
         lengths = _lengths_from_table(data[pos : pos + TABLE_SIZE])
         table = _build_decode_table(lengths)
-        pos += TABLE_SIZE
-        reader = _BitReader(data, pos)
+        reader = _BitReader(data, pos + TABLE_SIZE)
         block_end = len(out) + BLOCK_SIZE
-        while len(out) < block_end:
-            symbol = table[reader.peek15()]
-            reader.take(lengths[symbol])
-            if symbol < EOF_SYMBOL:
-                if max_size is not None and len(out) >= max_size:
-                    msg = f"decoded output would exceed the {max_size}-byte limit"
-                    raise DecompressionError(msg)
-                out.append(symbol)
-                continue
-            if symbol == EOF_SYMBOL:
-                return bytes(out)
-            match = symbol - EOF_SYMBOL
-            length = _decode_match_length(reader, match & 0x0F)
-            offset_bits = match >> 4
-            offset = reader.take(offset_bits) + (1 << offset_bits)
-            if max_size is not None and len(out) + length > max_size:
-                msg = f"decoded output would exceed the {max_size}-byte limit"
-                raise DecompressionError(msg)
-            _copy_match(out, offset, length)
+        if uncompressed_size is not None:
+            block_end = min(block_end, uncompressed_size)
+        if _decode_block(reader, lengths, table, out, block_end, max_size=max_size, uncompressed_size=uncompressed_size):
+            return bytes(out)
         pos = reader.pos
+    if uncompressed_size is not None and len(out) != uncompressed_size:
+        msg = f"compressed stream ended after {len(out)} of {uncompressed_size} bytes"
+        raise DecompressionError(msg)
     return bytes(out)
 
 
