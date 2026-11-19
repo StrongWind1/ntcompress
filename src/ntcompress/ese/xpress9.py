@@ -1325,9 +1325,13 @@ def _emit_mtf(tokens: list[tuple[int, ...]], encode_idx: int, offset_neg: int, l
 
     Factored out because both the main path and the LOOKAHEAD paths need
     identical MTF-emit + UPDATE_MTF logic (Xpress9EncLz77.c:42-66,
-    Xpress9Lz77EncPass1.i:15-21).
+    Xpress9Lz77EncPass1.i:15-21). A slot-0 hit leaves the list untouched, as
+    the C encoder only runs UPDATE_MTF when ``iIndex != 0`` and the decoder
+    does not reorder on symbol 0 (Xpress9Lz77Dec.i:189-192).
     """
     tokens.append((_TOKEN_MTF, encode_idx, -offset_neg, length))
+    if mtf_slot == 0:
+        return mtf_0, mtf_1, mtf_2, mtf_3
     if mtf_slot >= 3:
         mtf_3 = mtf_2
     if mtf_slot >= 2:
