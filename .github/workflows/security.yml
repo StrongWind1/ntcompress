@@ -38,4 +38,4 @@ jobs:
       - name: Audit dependencies (pip-audit)
         run: |
           set -euo pipefail
-          uv run --python 3.11 --with pip-audit pip-audit
+          uv run --with pip-audit pip-audit

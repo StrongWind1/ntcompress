@@ -8,7 +8,7 @@ name = "ntcompress"
 version = "0.3.1"
 description = "Pure-Python implementations of every Microsoft ESE record-compression scheme and Windows ntdll RtlCompressBuffer/RtlDecompressBuffer format."
 readme = "README.md"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.11,<3.15"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "ntcompress contributors" }]
@@ -29,7 +29,6 @@ keywords = [
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Intended Audience :: Developers",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
@@ -60,12 +59,10 @@ docs = [
   "mkdocs-material",
   "mkdocstrings[python]",
   "pymdown-extensions",
-  # mkdocstrings 1.0.6 is the last release for Python 3.10 and fails on pymdown-extensions 12.2+ (Highlight now requires md); 1.0.7 fixed it but needs Python 3.11.
-  "pymdown-extensions<12.2; python_full_version < '3.11'",
 ]
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py311"
 line-length = 320
 src = ["src"]
 
@@ -91,7 +88,7 @@ notice-rgx = "(?i)# SPDX-License-Identifier"
 convention = "google"
 
 [tool.ty.environment]
-python-version = "3.10"
+python-version = "3.11"
 root = ["src"]
 
 [tool.ty.rules]
