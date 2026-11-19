@@ -5,7 +5,7 @@ build-backend = "uv_build"
 
 [project]
 name = "ntcompress"
-version = "0.3.1"
+version = "0.4.0"
 description = "Pure-Python implementations of every Microsoft ESE record-compression scheme and Windows ntdll RtlCompressBuffer/RtlDecompressBuffer format."
 readme = "README.md"
 requires-python = ">=3.11,<3.15"
