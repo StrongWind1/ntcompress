@@ -33,7 +33,6 @@ UNIT_MASK: Final = 0x7F
 """Mask of one packed unit; both readers extract ``(x >> ibit) & 0x7F`` (compression.cxx:2166, 2243)."""
 
 _BYTE_BITS: Final = 8
-_WIDE_STRIDE: Final = 2  # bytes per UTF-16LE code unit (sizeof(WORD), compression.cxx:1002)
 
 MIN_CELL_SIZE: Final = 2
 """Smallest well-formed cell: header byte + one packed byte, which the readers' ``Cb - 2`` size math presumes (compression.cxx:2135)."""

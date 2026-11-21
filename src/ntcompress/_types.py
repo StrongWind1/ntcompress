@@ -5,5 +5,7 @@ from __future__ import annotations
 
 from typing import TypeAlias
 
+__all__ = ["Buffer"]
+
 Buffer: TypeAlias = bytes | bytearray | memoryview
 """Any read-only bytes-like input accepted by the codecs."""

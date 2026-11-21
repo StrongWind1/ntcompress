@@ -88,7 +88,6 @@ _TABLE_ROW_0: Final = _MAX_CODEWORD_LENGTH + 4  # copy length[i - 16]
 _TABLE_ROW_1: Final = _MAX_CODEWORD_LENGTH + 5  # copy length[i - 16] + 1
 _TABLE_ALPHABET_SIZE: Final = _MAX_CODEWORD_LENGTH + 6  # HUFFMAN_ENCODED_TABLE_SIZE = 33
 _TABLE_ZERO_REPT_MIN_COUNT: Final = 5  # HUFFMAN_ENCODED_TABLE_ZERO_REPT_MIN_COUNT
-_TABLE_FILL_BOUNDARY: Final = 16  # HUFFMAN_ENCODED_TABLE_FILL_BOUNDARY
 
 # Table-serialization framing values (Xpress9DecHuffman.c).
 _TABLE_ENCODING_STORED: Final = 0  # 3-bit mode 0: computed 9/10-bit lengths (Xpress9DecHuffman.c:431-452)
@@ -671,9 +670,6 @@ _ENC_PTR_MIN_MATCH_LENGTH: Final = 4
 _ENC_MTF_MIN_MATCH_LENGTH: Final = 2
 _ENC_SESSION_SIGNATURE: Final = 0x12345678
 
-# Minimum input size: a block must have at least one token, plus header overhead.
-_MIN_COMPRESS_INPUT: Final = 1
-
 # Hash table sizing follows the C encoder's StartSession logic
 # (Xpress9EncLz77.c:1062-1102): uMsb = window_log2 - 1, then capped by
 # lookup depth.  The oracle binary uses LookupDepth=1 and window 2^16,
@@ -1249,7 +1245,6 @@ def _chain_lookup(data: bytes | bytearray, pos: int, data_size: int, p_next: lis
             next_cur = p_next[cur]
             if cur + best_len - 1 + 1 < data_size and data[cur + best_len - 1] == tail0 and data[cur + best_len] == tail1:
                 found_candidate = cur
-                candidate = next_cur  # resume point for DEEP_LOOKUP continuation
                 break
             checks_in_block += 1
 
@@ -1257,7 +1252,6 @@ def _chain_lookup(data: bytes | bytearray, pos: int, data_size: int, p_next: lis
             cur2 = p_next[next_cur]
             if next_cur + best_len - 1 + 1 < data_size and data[next_cur + best_len - 1] == tail0 and data[next_cur + best_len] == tail1:
                 found_candidate = next_cur
-                candidate = cur2
                 break
             checks_in_block += 1
             cur = cur2
@@ -1556,9 +1550,9 @@ def _lz77_tokenize(data: bytes | bytearray) -> list[tuple[int, ...]]:
                     break
 
     # --- Flush trailing unhashed positions as literals (Xpress9EncLz77.c:1680-1686) ---
+    # The C loop also clears m_iMtfLastPtr, which is session state; nothing reads it after this pass.
     while pos < data_size:
         tokens.append((_TOKEN_LIT, data[pos]))
-        mtf_last_ptr = 0
         pos += 1
 
     return tokens
