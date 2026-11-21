@@ -1,5 +1,5 @@
 site_name: ntcompress
-site_description: Pure-Python implementations of every Microsoft ESE record-compression format and Windows ntdll compression format.
+site_description: "Pure-Python ESE record compression and ntdll RtlCompressBuffer/RtlDecompressBuffer formats"
 site_url: https://strongwind.dev/ntcompress/
 repo_url: https://github.com/StrongWind1/ntcompress
 repo_name: StrongWind1/ntcompress
@@ -56,6 +56,9 @@ theme:
     - content.action.edit
     - content.action.view
 
+hooks:
+  - hooks/html_validity.py
+
 plugins:
   - search
   # Downloads the Google Fonts requested by theme.font at build time so the
@@ -84,7 +87,6 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
-      anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
   - pymdownx.inlinehilite
@@ -130,6 +132,10 @@ extra_css:
   # theme.css is the site palette; primary and accent are both `custom`,
   # so every Material colour variable is defined there.
   - stylesheets/theme.css
+
+extra_javascript:
+  # a11y.js gives code blocks that scroll sideways a keyboard tab stop.
+  - javascripts/a11y.js
 
 strict: true
 
