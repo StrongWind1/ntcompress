@@ -23,3 +23,6 @@ site/
 .mypy_cache/
 htmlcov/
 .coverage
+
+# Built-site checkers (npm ci)
+node_modules/
