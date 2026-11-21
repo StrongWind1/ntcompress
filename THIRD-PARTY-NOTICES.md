@@ -5,7 +5,7 @@
 ## Provenance summary
 
 | Component | Relationship to upstream | Upstream | Upstream license |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `ese/xpress9.py` (XPRESS9 codec) | Port (derivative work) | Extensible-Storage-Engine `dev/ese/src/_xpress9/` | MIT (Microsoft) |
 | `ese/checksums.py` (CRC-32C, CRC-64) | Port of the CRC loops/constants | Extensible-Storage-Engine `dev/ese/src/_xpress10/xpress10sw.cxx`, `dev/ese/src/os/encrypt.cxx` | MIT (Microsoft) |
 | `ese/__init__.py`, `ese/_registry.py`, `ese/{sevenbit_ascii,sevenbit_unicode,xpress,scrub,xpress10}.py` | Constants/behaviour transcribed with citations | Extensible-Storage-Engine `dev/ese/src/ese/compression.cxx` | MIT (Microsoft) |
@@ -16,7 +16,7 @@
 
 ## Microsoft Extensible Storage Engine — MIT License
 
-```
+```text
 MIT License
 
 Copyright (c) Microsoft Corporation.
@@ -48,7 +48,7 @@ The Plain LZ77, LZ77+Huffman, and LZNT1 codecs are implemented from `[MS-XCA]: X
 
 `ese/lz4.py` implements the public LZ4 block format. It was written from the format description, not from liblz4 source. The reference implementation is:
 
-```
+```text
 LZ4 - Fast LZ compression algorithm
 Copyright (C) 2011-present, Yann Collet.
 

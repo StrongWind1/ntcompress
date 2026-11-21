@@ -55,7 +55,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Full documentation with mkdocstrings autodoc API reference.
 - 620 tests: per-format unit tests, gold vectors from 16 Windows builds, hypothesis property tests, and smoke tests for every public function.
 
-[Unreleased]: https://github.com/StrongWind1/ntcompress/compare/v0.3.0...HEAD
 [0.3.0]: https://github.com/StrongWind1/ntcompress/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/StrongWind1/ntcompress/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/StrongWind1/ntcompress/releases/tag/v0.1.0
